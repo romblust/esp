@@ -65,20 +65,31 @@ module.AddESP = function(part, color, config, name)
 end
 
 module.RemoveESP = function(part)
-    if part:FindFirstChild("esp") then
+    if part:FindFirstChild("esp") and part:FindFirstChild("esp"):IsA("Highlight") then
         part:FindFirstChild("esp"):Destroy()
     end
 
     for i, obj in pairs(part:GetChildren()) do
-        if obj:FindFirstChild("esp") then
-            obj:FindFirstChild("esp"):Destroy()
+        if obj:IsA("BillboardGui") and obj.Name == "esp" then
+            obj:Destroy()
+        end
+        if obj:IsA("TextLabel") and obj.Name == "esp" then
+            obj:Destroy()
         end
     end
 end
 
 module.Disconnect = function()
     for i, v in pairs(workspace:GetDescendants()) do
-        if v.Name == "esp" and v:isA("Highlight") and v:IsA("TextLabel") and v:IsA("BillboardGui") then v:Destroy() end
+        if v.Name == "esp" then
+            if v:IsA("Highlight") then
+                v:Destroy()
+            elseif v:IsA("BillboardGui") then
+                v:Destroy()
+            elseif v:IsA("TextLabel") then
+                v:Destroy()
+            end
+        end
     end
 end
 
