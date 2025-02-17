@@ -78,7 +78,7 @@ end
 
 module.Disconnect = function()
     for i, v in pairs(workspace:GetDescendants()) do
-        if v.Name == "esp" and v:isA("Highlight") then v:Destroy() end
+        if v.Name == "esp" and v:isA("Highlight") and v:IsA("TextLabel") and v:IsA("BillboardGui") then v:Destroy() end
     end
 end
 
