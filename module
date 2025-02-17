@@ -1,0 +1,64 @@
+--// Set up
+local options 
+module = {}
+
+module.init = function()
+    if getgenv().Settings then 
+        options = getgenv().Settings
+    end
+    if not getgenv().Settings then 
+       options = {["Type"] = "Outlines", ["FillType"] = "Model"}
+    end
+end
+
+module.AddESP = function(part, color, config)
+    if part:FindFirstChild("esp") then part:FindFirstChild("esp"):Destroy() end
+    local espObject = Instance.new("Highlight")
+    if config["Type"] == "Outlines" then 
+        espObject.FillTransparency = 1
+        espObject.OutlineColor = color
+        espObject.Parent = part
+        espObject.Name = "esp"
+    end
+    if config["Type"] == "Fill" then 
+        if config["FillType"] == "Model" then 
+            espObject.FillTransparency = 0.5
+            espObject.FillColor = color
+            espObject.OutlineColor = Color3.fromRGB(255, 255, 255)
+            espObject.Parent = part
+            espObject.Name = "esp"
+        end
+        if config["FillType"] == "Limb" then 
+            for i, v in pairs(part:GetChildren()) do 
+               if v:isA("BasePart") then 
+                    local limbs = Instance.new("Highlight")
+                    limbs.FillTransparency = 0.5
+                    limbs.FillColor = color
+                    limbs.OutlineColor = Color3.fromRGB(255, 255, 255)
+                    limbs.Parent = v
+                    limbs.Name = "esp"
+               end
+            end
+        end
+    end
+end
+
+module.RemoveESP = function(part)
+    if part:FindFirstChild("esp") then 
+        part:FindFirstChild("esp"):Destroy()
+    end
+
+    for i, obj in pairs(part:GetChildren()) do 
+        if obj:FindFirstChild("esp") then 
+           obj:FindFirstChild("esp"):Destroy()
+        end
+    end
+end
+
+module.Disconnect = function()
+    for i, v in pairs(workspace:GetDescendants()) do
+        if v.Name == "esp" and v:isA("Highlight") then v:Destroy() end
+    end 
+end
+
+return module
