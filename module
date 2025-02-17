@@ -14,6 +14,7 @@ module.AddESP = function(part, color, config, name)
     if part:FindFirstChild("esp") then
         part:FindFirstChild("esp"):Destroy()
     end
+
     local espObject = Instance.new("Highlight")
 
     if config["Type"] == "Outlines" then
